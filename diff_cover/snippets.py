@@ -2,11 +2,12 @@
 Load snippets from source files to show violation lines
 in HTML reports.
 """
-
+from __future__ import unicode_literals
 import pygments
 from pygments.lexers import TextLexer, guess_lexer_for_filename
 from pygments.formatters import HtmlFormatter
 from pygments.util import ClassNotFound
+import six
 
 
 class Snippet(object):
@@ -144,7 +145,7 @@ class Snippet(object):
 
         return [
             Snippet(tokens, src_path, start, violation_lines)
-            for (start, _), tokens in token_groups.iteritems()
+            for (start, _), tokens in six.iteritems(token_groups)
         ]
 
     @classmethod
@@ -210,7 +211,7 @@ class Snippet(object):
                 val_lines = val.split('\n')
 
                 # Check if the tokens match each range
-                for (start, end), filtered_tokens in token_map.iteritems():
+                for (start, end), filtered_tokens in six.iteritems(token_map):
 
                     # Filter out lines that are not in this range
                     include_vals = [
@@ -232,7 +233,7 @@ class Snippet(object):
             # If we're in the line range, add it
             else:
                 # Check if the tokens match each range
-                for (start, end), filtered_tokens in token_map.iteritems():
+                for (start, end), filtered_tokens in six.iteritems(token_map):
 
                     # If we got a match, store the token
                     if line_num in range(start, end + 1):

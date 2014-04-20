@@ -4,6 +4,11 @@ python:
 before_install:
   - git fetch origin master:refs/remotes/origin/master
 install:
+  - "sudo apt-get install -y python-software-properties"
+  - "sudo add-apt-repository -y ppa:fkrull/deadsnakes"
+  - "sudo apt-get update -y "
+  - "sudo apt-get install -y python3.4"
+  - "sudo apt-get install -y python3.4-dev"
   - "pip install coveralls tox"
 script: 
   - tox

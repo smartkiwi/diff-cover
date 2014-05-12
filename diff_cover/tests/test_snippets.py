@@ -1,4 +1,3 @@
-from __future__ import unicode_literals
 import os
 import tempfile
 from pygments.token import Token
@@ -199,6 +198,24 @@ class SnippetLoaderTest(unittest.TestCase):
 
         # Check that we got what we expected
         assert_long_str_equal(expected, snippets_html, strip=True)
+
+    def test_load_snippets_non_ascii(self):
+
+        # Need to be in the fixture directory
+        # so the source path is displayed correctly
+        old_cwd = os.getcwd()
+        self.addCleanup(lambda: os.chdir(old_cwd))
+        os.chdir(fixture_path(''))
+
+        src_path = fixture_path('snippet_src.py')
+        self._init_src_file(100, src_path)
+
+        # One higher-level test to make sure
+        # the snippets are being rendered correctly
+        violations = [10, 12, 13, 50, 51, 54, 55, 57]
+        snippets_html = '\n\n'.join(
+            Snippet.load_snippets_html('snippet_non_ascii.py', violations)
+        )
 
     def _assert_line_range(self, violation_lines, expected_ranges):
         """
